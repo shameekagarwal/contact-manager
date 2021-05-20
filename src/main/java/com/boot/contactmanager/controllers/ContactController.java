@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Controller
 @RequestMapping("contacts")
@@ -81,9 +82,11 @@ public class ContactController {
             if (!image.isEmpty()) {
                 contact.setImageUrl(imageUploader.uploadImage(image));
             } else if (contact.getImageUrl() == null || contact.getImageUrl().equals("")) {
-                contact.setImageUrl("default_profile_pic.png");
+                String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+                contact.setImageUrl(baseUrl + "/images/default_profile_pic.png");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             // uploading failed e.g. files with wrong extension
             result.rejectValue("imageUrl", "contact.imageUrl", "image upload failed, please check image format");
         }

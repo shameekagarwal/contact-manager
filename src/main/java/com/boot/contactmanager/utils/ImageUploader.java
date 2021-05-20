@@ -1,18 +1,34 @@
 package com.boot.contactmanager.utils;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
-import org.springframework.core.io.ClassPathResource;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 // upload image
 @Component
 public class ImageUploader {
+
+    @Value("${cloudinaryconfig.cloud_name}")
+    private String cloudName;
+
+    @Value("${cloudinaryconfig.api_key}")
+    private String apiKey;
+
+    @Value("${cloudinaryconfig.api_secret}")
+    private String apiSecret;
+
+    private File multipartToFile(MultipartFile multipart, String fileName) throws Exception {
+        File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + fileName);
+        multipart.transferTo(convFile);
+        return convFile;
+    }
+
     public String uploadImage(MultipartFile image) throws Exception {
         // not file present
         if (image.isEmpty()) {
@@ -25,11 +41,22 @@ public class ImageUploader {
         }
 
         // produce a unique(ish) filename
-        String fileName = System.currentTimeMillis() + '_' + image.getOriginalFilename();
-        Path path = Paths
-                .get(new ClassPathResource("static/images/").getFile().getAbsolutePath() + File.separator + fileName);
-        Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        // used by cloudinary for storing in tmp directory
+        String fileName = System.currentTimeMillis() + image.getOriginalFilename();
 
-        return fileName;
+        // CLOUDINARY
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                //
+                "cloud_name", cloudName,
+                //
+                "api_key", apiKey,
+                //
+                "api_secret", apiSecret));
+        Map<?, ?> result = cloudinary.uploader().upload(multipartToFile(image, fileName),
+                ObjectUtils.asMap("folder", "contact-manager"));
+
+        System.out.println(result);
+
+        return (String) result.get("secure_url");
     }
 }

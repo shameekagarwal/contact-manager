@@ -1,13 +1,17 @@
 # contact manager
 
-a basic spring boot app to
+<b>[link to website](http://contact-manager11.herokuapp.com/)</b>
+
+<hr />
+
+## features
 
 1. signup, login, forgot password
 2. crud and search contacts
 
 <hr />
 
-dependencies used -
+## dependencies used
 
 1. web-mvc
 2. devtools
@@ -19,4 +23,3 @@ dependencies used -
 8. spring-security
 
 <hr />
-

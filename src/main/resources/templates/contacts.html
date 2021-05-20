@@ -29,14 +29,8 @@
               <tr th:each="contact : ${contacts}">
                 <!-- image -->
                 <td>
-                  <a
-                    th:href="@{'/images/'+ ${contact.imageUrl}}"
-                    target="_blank"
-                  >
-                    <img
-                      th:src="@{'/images/'+ ${contact.imageUrl}}"
-                      class="contact-pic"
-                    />
+                  <a th:href="${contact.imageUrl}" target="_blank">
+                    <img th:src="${contact.imageUrl}" class="contact-pic" />
                   </a>
                 </td>
 
