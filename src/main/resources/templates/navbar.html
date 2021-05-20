@@ -1,0 +1,52 @@
+<!-- navbar fragment -->
+<!-- show / hide links based on isAuthenticated field of Model set by interceptor -->
+
+<nav
+  th:fragment="navbar"
+  class="navbar navbar-expand-md navbar-dark bg-primary"
+>
+  <div class="container">
+    <a class="navbar-brand" th:href="@{/}"><b>ContactManager</b></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <!-- home -->
+        <li class="nav-item me-2">
+          <a class="nav-link active" th:href="@{/}">Home</a>
+        </li>
+        <!-- signin -->
+        <li th:if="${!isAuthenticated}" class="nav-item me-2">
+          <a class="nav-link active" th:href="@{/auth/signin/}">Signin</a>
+        </li>
+        <!-- signup -->
+        <li th:if="${!isAuthenticated}" class="nav-item">
+          <a class="nav-link active" th:href="@{/auth/signup/}">Signup</a>
+        </li>
+        <!-- contacts -->
+        <li th:if="${isAuthenticated}" class="nav-item me-2">
+          <a class="nav-link active" th:href="@{/contacts/1/}">Contacts</a>
+        </li>
+        <!-- create contact -->
+        <li th:if="${isAuthenticated}" class="nav-item me-2">
+          <a class="nav-link active" th:href="@{/contacts/create/}">
+            Create Contact
+          </a>
+        </li>
+        <!-- logout -->
+        <li th:if="${isAuthenticated}" class="nav-item">
+          <a class="nav-link active" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

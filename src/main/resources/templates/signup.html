@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <section>
+    <div class="card">
+      <h3 class="card-header">Signup</h3>
+      <div class="card-body">
+        <form th:action="@{/auth/signup/}" method="POST" th:object="${user}">
+          <!-- name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Name *</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="name"
+              th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+              th:value="${user.name}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('name')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email *</label>
+            <input
+              type="text"
+              name="email"
+              class="form-control"
+              id="email"
+              th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+              th:value="${user.email}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('email')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- password -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password *</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="password"
+              th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}"
+              th:value="${user.password}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('password')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- submit button -->
+          <button class="btn btn-primary" type="submit">signup</button>
+        </form>
+      </div>
+
+      <!-- redirect to signin -->
+      <div class="card-footer pb-0">
+        <p>
+          Already Have An Account?
+          <a class="ms-2" th:href="@{/auth/signin/}">Go To Signin</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</html>

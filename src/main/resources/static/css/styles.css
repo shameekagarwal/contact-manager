@@ -1,0 +1,11 @@
+td,
+th {
+  white-space: nowrap !important;
+  vertical-align: middle;
+}
+
+.contact-pic {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}

@@ -1,0 +1,13 @@
+<!-- alert fragment -->
+<!-- show session mesage if session mesage is set -->
+<!-- also clear session message automatically once shown -->
+<div
+  th:fragment="alert"
+  th:if="${session.message}"
+  th:classappend="${session.message.type == 'error' ? 'alert-danger' : 'alert-success'}"
+  class="alert"
+  role="alert"
+>
+  <span th:text="${session.message.content}"></span>
+  <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+</div>

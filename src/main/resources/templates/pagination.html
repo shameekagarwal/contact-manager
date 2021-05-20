@@ -1,0 +1,51 @@
+<div class="card-footer" th:fragment="pagination" th:if="${totalPages > 1}">
+  <nav>
+    <ul class="pagination">
+      <!-- first page -->
+      <li class="page-item" th:if="${currentPage != 1}">
+        <a class="page-link" th:href="@{'/contacts/1/'}">First</a>
+      </li>
+
+      <!-- previous page -->
+      <li class="page-item" th:if="${currentPage != 1}">
+        <a
+          class="page-link"
+          th:href="@{'/contacts/'+ ${currentPage - 1} + '/'}"
+        >
+          Previous
+        </a>
+      </li>
+
+      <!-- current page, previous page, next page -->
+      <li
+        class="page-item"
+        th:each="page : ${#numbers.sequence(1, totalPages)}"
+        th:classappend="${page == currentPage ? 'active': ''}"
+        th:if="${page == currentPage || page == currentPage + 1 || page == currentPage - 1 }"
+      >
+        <a
+          class="page-link"
+          th:text="${page}"
+          th:href="@{'/contacts/' + ${page} + '/'}"
+        ></a>
+      </li>
+
+      <!-- next page -->
+      <li class="page-item" th:if="${currentPage != totalPages}">
+        <a
+          class="page-link"
+          th:href="@{'/contacts/' + ${currentPage + 1} + '/'}"
+        >
+          Next
+        </a>
+      </li>
+
+      <!-- last page -->
+      <li class="page-item" th:if="${currentPage != totalPages}">
+        <a class="page-link" th:href="@{'/contacts/'+ ${totalPages} + '/'}">
+          Last
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

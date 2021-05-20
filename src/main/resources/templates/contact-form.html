@@ -1,0 +1,111 @@
+<html
+  lang="en"
+  xmlns:th="http://thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <section>
+    <div class="card">
+      <h3 class="card-header" th:text="${title}"></h3>
+      <div class="card-body">
+        <form
+          th:action="${action}"
+          method="POST"
+          enctype="multipart/form-data"
+          th:object="${contact}"
+        >
+          <!-- name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Name *</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="name"
+              th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+              th:value="${contact.name}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('name')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- email -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="text"
+              name="email"
+              class="form-control"
+              id="email"
+              th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+              th:value="${contact.email}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('email')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- phoneNumber -->
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input
+              type="text"
+              name="phoneNumber"
+              class="form-control"
+              id="phoneNumber"
+              th:classappend="${#fields.hasErrors('phoneNumber') ? 'is-invalid' : ''}"
+              th:value="${contact.phoneNumber}"
+            />
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('phoneNumber')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <input type="hidden" name="id" th:value="${contact.id}" />
+          <input type="hidden" name="imageUrl" th:value="${contact.imageUrl}" />
+
+          <!-- imageUrl -->
+          <div class="mb-4">
+            <label for="image" class="form-label">Image of Contact</label>
+            <input
+              class="ms-2"
+              type="file"
+              name="image"
+              id="image"
+              th:classappend="${#fields.hasErrors('imageUrl') ? 'is-invalid' : ''}"
+            />
+
+            <!-- show old image link (in case of edit) -->
+            <p class="mt-2" th:if="${contact.imageUrl != null}">
+              <span class="me-4">Current Image</span>
+              <a
+                th:href="@{'/images/'+ ${contact.imageUrl}}"
+                th:text="${contact.imageUrl}"
+                target="_blank"
+              >
+              </a>
+            </p>
+            <div
+              class="invalid-feedback"
+              th:each="e : ${#fields.errors('imageUrl')}"
+              th:text="${e}"
+            ></div>
+          </div>
+
+          <!-- submit button -->
+          <button
+            class="btn btn-primary"
+            type="submit"
+            th:text="${title}"
+          ></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</html>

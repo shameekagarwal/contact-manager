@@ -1,0 +1,116 @@
+<html
+  lang="en"
+  xmlns:th="http://thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <section>
+    <!-- about -->
+    <h1 class="my-4" th:if="${!isAuthenticated}">ContactManager</h1>
+    <p class="mb-0" th:if="${!isAuthenticated}">
+      our goal is to help you manage all your contacts from one place easily.
+    </p>
+    <p class="mb-0" th:if="${!isAuthenticated}">
+      view, search, create, update and delete your contacts.
+    </p>
+    <p th:if="${!isAuthenticated}">
+      no one else has access your contacts, as security is our priority.
+    </p>
+
+    <!-- search bar -->
+    <div th:if="${isAuthenticated}" class="mb-3">
+      <div class="card">
+        <div class="card-header py-3">
+          <label for="search" class="form-label">Search in your contacts</label>
+          <input
+            onkeyup="search()"
+            type="text"
+            class="form-control form-control-lg"
+            id="search"
+          />
+        </div>
+        <div
+          style="display: none"
+          id="search-result-container"
+          class="card-body"
+        >
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Profile Picture</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead>
+              <tbody id="search-result"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- js to trigger search (with debouncing) -->
+    <script>
+      const searchBox = document.querySelector("#search");
+      const searchResultContainer = document.querySelector(
+        "#search-result-container"
+      );
+      const searchResult = document.querySelector("#search-result");
+
+      let oldTimeoutId = null;
+
+      const getContactHtml = (contact) =>
+        `
+          <tr>
+            <td>
+              <img
+                src="/images/${contact.imageUrl}"
+                class="contact-pic"
+              />
+            </td>
+            <td>${contact.name}</td>
+            <td>${contact.phoneNumber ? contact.phoneNumber : ""}</td>
+            <td>${contact.email ? contact.email : ""}</td>
+          </tr>
+        `;
+
+      const search = () => {
+        const searchTerm = searchBox.value;
+        searchResultContainer.style.display = "none";
+
+        // cancel old search function
+        if (oldTimeoutId) {
+          clearTimeout(oldTimeoutId);
+        }
+
+        // return if search term empty
+        if (searchTerm === "") {
+          return;
+        }
+
+        const timeoutId = setTimeout(() => {
+          const searchUrl = `/search/contacts/${searchTerm}`;
+          fetch(searchUrl)
+            .then((response) => response.json())
+            .then((data) => {
+              // no contacts
+              if (!data.length) {
+                return;
+              }
+
+              // loop over contacts and add to DOM
+              searchResultContainer.style.display = "block";
+              searchResult.innerHTML = "";
+              data.forEach(
+                (contact) => (searchResult.innerHTML += getContactHtml(contact))
+              );
+            });
+        }, 1000);
+
+        // reassign timeout id
+        oldTimeoutId = timeoutId;
+      };
+    </script>
+  </section>
+</html>

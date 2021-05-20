@@ -1,0 +1,42 @@
+<!-- modal to confirm delete -->
+<!-- one modal is rendered for each delete link = 5 modals max -->
+
+<div
+  th:fragment="delete-modal(contactId)"
+  class="modal fade"
+  th:id="'delete-modal-' + ${contactId}"
+  tabindex="-1"
+  aria-labelledby="delete-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete-modal">Confirm</h5>
+
+        <!-- X button -->
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure you want to delete the contact?</div>
+      <div class="modal-footer">
+        <!-- close button -->
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <!-- confirm delete button -->
+        <a
+          th:href="@{'/contacts/delete/' + ${contactId} + '/'}"
+          type="button"
+          class="btn btn-primary"
+        >
+          Delete
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

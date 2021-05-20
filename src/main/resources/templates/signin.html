@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <section>
+    <div class="card">
+      <h3 class="card-header">Signin</h3>
+      <div class="card-body">
+        <form th:action="@{/auth/signin/}" action="#" method="POST">
+          <!-- email -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Email *</label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              id="username"
+            />
+          </div>
+
+          <!-- password -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password *</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="password"
+            />
+          </div>
+
+          <!-- submit button -->
+          <button class="btn btn-primary" type="submit">signin</button>
+
+          <!-- forgot password link -->
+          <a
+            th:href="@{/auth/forgot-password}"
+            class="btn btn-secondary ms-2"
+            type="submit"
+          >
+            forgot password
+          </a>
+        </form>
+      </div>
+
+      <!-- redirect to signup -->
+      <div class="card-footer pb-0">
+        <p>
+          Dont Have An Account?
+          <a class="ms-2" th:href="@{/auth/signup/}">Go To Signup</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</html>

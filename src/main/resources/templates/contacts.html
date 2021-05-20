@@ -1,0 +1,81 @@
+<html
+  lang="en"
+  xmlns:th="http://thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <section>
+    <div class="card">
+      <div class="card-header">
+        <h3>My Contacts</h3>
+        <small>showing a maximum of five contacts per page</small>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <!-- table headings -->
+              <tr>
+                <th scope="col">Profile Picture</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- loop over all contacts and render them -->
+              <tr th:each="contact : ${contacts}">
+                <!-- image -->
+                <td>
+                  <a
+                    th:href="@{'/images/'+ ${contact.imageUrl}}"
+                    target="_blank"
+                  >
+                    <img
+                      th:src="@{'/images/'+ ${contact.imageUrl}}"
+                      class="contact-pic"
+                    />
+                  </a>
+                </td>
+
+                <!-- details -->
+                <td th:text="${contact.name}"></td>
+                <td th:text="${contact.email}"></td>
+                <td th:text="${contact.phoneNumber}"></td>
+
+                <!-- edit link -->
+                <td>
+                  <a
+                    th:href="@{'/contacts/update/' + ${contact.id}}"
+                    class="btn btn-primary"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </a>
+                </td>
+
+                <!-- delete link -->
+                <td>
+                  <button
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    th:data-bs-target="'#delete-modal-' + ${contact.id}"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <div
+                    th:replace="delete-modal::delete-modal(${contact.id})"
+                  ></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- pagination -->
+      <div th:replace="pagination::pagination"></div>
+    </div>
+  </section>
+</html>
